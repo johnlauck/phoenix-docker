@@ -1,0 +1,38 @@
+web:
+  build: .
+  ports:
+    - "4000:4000"
+  command: mix phx.server
+  environment:
+    - MIX_ENV=dev
+    - PORT=4000
+  volumes:
+    - .:/app
+  links:
+    - db
+db:
+  image: postgres
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_HOST=db
+test:
+  build: .
+  command: mix test
+  ports: []
+  environment:
+    - MIX_ENV=test
+  volumes:
+    - .:/app
+  links:
+    - db
+app:
+  build: .
+  ports: []
+  command: bash
+  environment:
+    - MIX_ENV=dev
+  volumes:
+    - .:/app
+  links:
+    - db
